@@ -64,9 +64,14 @@ func Test_match_MustWork(t *testing.T) {
 		{8, "10", "2", true},
 		{9, "11", "3", true},
 		{10, "11", "3", true},
+		{11, "21", "3", false},
+		{12, "21", "G3", false},
+		{13, "200001", "G000003", false},
+		{14, "1000", "8", true},
 	}
 
 	for _, tc := range test_cases {
+		t.Logf("%v", tc)
 		result := match(tc.binary, tc.hexa)
 		if result != tc.result {
 			t.Errorf(fmt.Sprintf("Invalid result TestCase: %d %v", tc.index, tc))

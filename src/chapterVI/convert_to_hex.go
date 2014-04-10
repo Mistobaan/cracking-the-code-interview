@@ -1,8 +1,28 @@
 package chapterVI
 
-import (
-	"math"
-)
+// exp values: 0 255
+// int32 = - 2 ** 31 to 2 ** 31
+//
+func ipow(base int, exp uint) int {
+	switch {
+	case base == 0:
+		return 0
+	case exp == 0:
+		return 1
+	}
+
+	// http://en.wikipedia.org/wiki/Exponentiation_by_squaring
+	result := 1
+	for exp != 0 {
+		if (exp & 1) != 0 { // is odd
+			result *= base
+		}
+		exp >>= 1
+		base *= base
+	}
+
+	return result
+}
 
 func digit(char byte) int {
 	if char >= '0' && char <= '9' {
@@ -26,11 +46,11 @@ func convertToDigit(input string, base int) int {
 	for i := len(input) - 1; i >= 0; i += -1 {
 		ch := input[i]
 		value := digit(ch)
-		if value > base {
+		if value < 0 && value > base {
 			return -1
 		}
-		position := len(input) - 1 - i
-		result += value * int(math.Pow(float64(base), float64(position)))
+		position := uint(len(input) - 1 - i)
+		result += value * ipow(base, position)
 	}
 
 	return result
