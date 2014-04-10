@@ -1,9 +1,22 @@
 package chapterVI
 
 import (
-	"reflect"
 	"testing"
 )
+
+func equal(a, b []int) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	for i := 0; i < len(a); i += 1 {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+
+	return true
+}
 
 func Test_min_max_swap_MustWork(t *testing.T) {
 	type TestCase struct {
@@ -22,7 +35,7 @@ func Test_min_max_swap_MustWork(t *testing.T) {
 		t.Logf("%v", tc.input)
 		swap_min_max(tc.input)
 
-		if !reflect.DeepEqual(tc.input, tc.output) {
+		if !equal(tc.input, tc.output) {
 			t.Fatalf("%d: %v != %v", idx, tc.input, tc.output)
 		}
 	}
